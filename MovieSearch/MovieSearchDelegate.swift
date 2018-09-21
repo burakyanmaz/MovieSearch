@@ -13,8 +13,8 @@ class MovieSearchDelegate: NSObject {
     
 }
 
-extension MovieSearchDelegate:  PYSearchViewControllerDelegate {
+extension MovieSearchDelegate: PYSearchViewControllerDelegate {
     func searchViewController(_ searchViewController: PYSearchViewController!, searchTextDidChange searchBar: UISearchBar!, searchText: String!) {
-        
+        AppStateObserver.sharedInstance.startASearch(with: searchText)
     }
 }

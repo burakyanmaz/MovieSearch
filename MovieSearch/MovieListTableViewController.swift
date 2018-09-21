@@ -9,7 +9,7 @@
 import UIKit
 import PYSearch
 
-class MovieSearchViewController: UIViewController {
+class MovieListTableViewController: UITableViewController {
 
     var searchViewController: PYSearchViewController?
     let searchDelegate = MovieSearchDelegate()
@@ -23,16 +23,10 @@ class MovieSearchViewController: UIViewController {
         })
         searchViewController?.showHotSearch = false
         searchViewController?.delegate = searchDelegate
-        searchViewController?.searchHistoriesCount = 1
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super .viewDidAppear(animated)
+        searchViewController?.searchHistoriesCount = 10
+        searchViewController?.searchViewControllerShowMode = .modePush
         
-        if let theSearchViewController = searchViewController {
-            let nav = UINavigationController.init(rootViewController: theSearchViewController)
-            present(nav, animated: false, completion: nil)
-        }
+        tableView.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,6 +34,18 @@ class MovieSearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    
+    @IBAction func searchMovieBarButtonAction(_ sender: UIBarButtonItem) {
+        if let theSearchViewController = searchViewController {
+            self.navigationController?.pushViewController(theSearchViewController, animated: true)
+        }
+    }
+}
+
+extension MovieListTableViewController: Observer {
+    func searchResultFetched() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
 }
 
