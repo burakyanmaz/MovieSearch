@@ -85,10 +85,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="jZb-WV-CCj" id="L4l-Rc-Ifs"/>
-                            <outlet property="delegate" destination="jZb-WV-CCj" id="ruY-Rc-ub1"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="bAx-Xm-Lmu">
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Rt2-AD-rvL">

@@ -11,11 +11,15 @@ import UIKit
 protocol Observer: class {
     //func update<T>(with newValue: T)
     func searchHappened(with keywords: String)
-    func searchResultFetched()
+    func newPageDidLoad(totalItemCount: Int, itemCountSoFar: Int)
+    
+    func shouldLoadNewPage()
 }
 extension Observer {
     func searchHappened(with keywords: String) {}
-    func searchResultFetched() {}
+    func newPageDidLoad(totalItemCount: Int, itemCountSoFar: Int) {}
+    
+    func shouldLoadNewPage() {}
 }
 
 class AppStateObserver {
@@ -35,15 +39,20 @@ class AppStateObserver {
     func startASearch(with keywords: String) {
         searchState = .searchStart(with: keywords)
     }
-    func searchDidComplete() {
-        searchState = .searchResultFetchedFromWebAPI
+    func searchDidComplete(totalItemCount: Int, itemCountSoFar: Int) {
+        searchState = .searchResultFetchedFromWebAPI(totalItemCount: totalItemCount, itemCountSoFar: itemCountSoFar)
+    }
+    
+    func loadNextPage() {
+        searchState = .newPageLoad
     }
 }
 
 extension AppStateObserver {
     enum SearchState {
         case searchStart(with: String)
-        case searchResultFetchedFromWebAPI
+        case searchResultFetchedFromWebAPI(totalItemCount: Int, itemCountSoFar: Int)
+        case newPageLoad
         case idle
     }
 }
@@ -81,8 +90,11 @@ private extension AppStateObserver {
                 // Broadcast the search state
                 observer.searchHappened(with: keywords)
                 
-            case .searchResultFetchedFromWebAPI:
-                observer.searchResultFetched()
+            case .searchResultFetchedFromWebAPI(let totalItemCount, let itemCountSoFar):
+                observer.newPageDidLoad(totalItemCount: totalItemCount, itemCountSoFar: itemCountSoFar)
+                
+            case .newPageLoad:
+                observer.shouldLoadNewPage()
                 
             case .idle:
                 break

@@ -9,13 +9,11 @@
 import UIKit
 
 // TODO: - Look for UITableViewDataSourcePrefetching for pagination (iOS 10.0+ though). -
-// TODO: - Look into https://stackoverflow.com/a/35475282/4369441 for iOS 9.0.
 class MovieListDataSource: NSObject {
     struct ListDataSource {
         var movieList: [MovieResult]?
+        var lastMovieData: MovieListWebResponse?
     }
-    
-    fileprivate var movieData: MovieListWebResponse?
 }
 
 extension MovieListDataSource: UITableViewDataSource {
@@ -41,6 +39,11 @@ extension MovieListDataSource: UITableViewDataSource {
 extension MovieListDataSource: Observer {
     func searchHappened(with keywords: String) {
         // Make another search
+        
+    }
+    
+    func shouldLoadNewPage() {
+        // Make a new request for the next page
         
     }
 }

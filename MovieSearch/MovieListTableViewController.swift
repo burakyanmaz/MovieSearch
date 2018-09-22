@@ -13,6 +13,8 @@ class MovieListTableViewController: UITableViewController {
 
     var searchViewController: PYSearchViewController?
     let searchDelegate = MovieSearchDelegate()
+    let tableViewDelegate = MovieListDelegate()
+    let tableViewDataSource = MovieListDataSource()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +29,9 @@ class MovieListTableViewController: UITableViewController {
         searchViewController?.searchViewControllerShowMode = .modePush
         
         tableView.tableFooterView = UIView()
+        
+        tableView.delegate = tableViewDelegate
+        tableView.dataSource = tableViewDataSource
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,8 +47,10 @@ class MovieListTableViewController: UITableViewController {
 }
 
 extension MovieListTableViewController: Observer {
-    func searchResultFetched() {
+    func newPageDidLoad(totalItemCount: Int, itemCountSoFar: Int) {
+        // Update movieListCount
         DispatchQueue.main.async { [weak self] in
+            tableViewDelegate.setItemCounts(totalItemCount: totalItemCount, itemCountSoFar: itemCountSoFar)
             self?.tableView.reloadData()
         }
     }
