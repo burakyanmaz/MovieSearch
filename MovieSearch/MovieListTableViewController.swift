@@ -15,6 +15,7 @@ class MovieListTableViewController: UITableViewController {
     let searchDelegate = MovieSearchDelegate()
     let tableViewDelegate = MovieListDelegate()
     let tableViewDataSource = MovieListDataSource()
+    let emptySetDataSourceAndDelegate = EmptyDataSetDataSourceAndDelegate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,10 @@ class MovieListTableViewController: UITableViewController {
         
         tableView.delegate = tableViewDelegate
         tableView.dataSource = tableViewDataSource
+        tableView.emptyDataSetSource = emptySetDataSourceAndDelegate
+        tableView.emptyDataSetDelegate = emptySetDataSourceAndDelegate
+        
+        AppStateObserver.sharedInstance.addObserver(observer: self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,6 +45,10 @@ class MovieListTableViewController: UITableViewController {
     }
 
     @IBAction func searchMovieBarButtonAction(_ sender: UIBarButtonItem) {
+        openSearchViewController()
+    }
+    
+    fileprivate func openSearchViewController() {
         if let theSearchViewController = searchViewController {
             self.navigationController?.pushViewController(theSearchViewController, animated: true)
         }
@@ -50,9 +59,16 @@ extension MovieListTableViewController: Observer {
     func newPageDidLoad(totalItemCount: Int, itemCountSoFar: Int) {
         // Update movieListCount
         DispatchQueue.main.async { [weak self] in
-            tableViewDelegate.setItemCounts(totalItemCount: totalItemCount, itemCountSoFar: itemCountSoFar)
+            self?.tableViewDelegate.setItemCounts(totalItemCount: totalItemCount, itemCountSoFar: itemCountSoFar)
             self?.tableView.reloadData()
+            self?.tableViewDelegate.activityView?.stopAnimating()
+            
+            self?.title = self?.tableViewDataSource.movieData?.queryToSearch
         }
+    }
+    
+    func shouldOpenSearchVC() {
+        openSearchViewController()
     }
 }
 

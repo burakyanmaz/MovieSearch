@@ -12,14 +12,14 @@ protocol Observer: class {
     //func update<T>(with newValue: T)
     func searchHappened(with keywords: String)
     func newPageDidLoad(totalItemCount: Int, itemCountSoFar: Int)
-    
     func shouldLoadNewPage()
+    func shouldOpenSearchVC()
 }
 extension Observer {
     func searchHappened(with keywords: String) {}
     func newPageDidLoad(totalItemCount: Int, itemCountSoFar: Int) {}
-    
     func shouldLoadNewPage() {}
+    func shouldOpenSearchVC() {}
 }
 
 class AppStateObserver {
@@ -39,12 +39,17 @@ class AppStateObserver {
     func startASearch(with keywords: String) {
         searchState = .searchStart(with: keywords)
     }
+    
     func searchDidComplete(totalItemCount: Int, itemCountSoFar: Int) {
         searchState = .searchResultFetchedFromWebAPI(totalItemCount: totalItemCount, itemCountSoFar: itemCountSoFar)
     }
     
     func loadNextPage() {
         searchState = .newPageLoad
+    }
+    
+    func openSearchViewController() {
+        searchState = .idle
     }
 }
 
@@ -97,7 +102,7 @@ private extension AppStateObserver {
                 observer.shouldLoadNewPage()
                 
             case .idle:
-                break
+                observer.shouldOpenSearchVC()
             }
         })
     }

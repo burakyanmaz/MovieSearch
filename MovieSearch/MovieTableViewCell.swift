@@ -35,7 +35,7 @@ class MovieTableViewCell: UITableViewCell {
         
         if let theImageURLString = movie.posterPath {
             posterImageView.kf.indicatorType = .activity
-            posterImageView.kf.setImage(with: URL.init(string: WebServiceAPI.Poster.poster(with: .w185, posterPath: theImageURLString).url))
+            posterImageView.kf.setImage(with: URL.init(string: WebServiceAPI.Poster.poster(with: .w185, posterPath: theImageURLString).url), placeholder: #imageLiteral(resourceName: "image_placeholder"))
         }
     }
     
