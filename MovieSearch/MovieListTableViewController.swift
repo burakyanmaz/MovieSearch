@@ -21,9 +21,7 @@ class MovieListTableViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        searchViewController = PYSearchViewController.init(hotSearches: [""], searchBarPlaceholder: "Search a movie...", didSearch: { (searchVC, searchBar, searchedText) in
-//            searchVC?.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
-        })
+        searchViewController = PYSearchViewController.init(hotSearches: [""], searchBarPlaceholder: "Search a movie...")
         searchViewController?.showHotSearch = false
         searchViewController?.delegate = searchDelegate
         searchViewController?.searchHistoriesCount = 10

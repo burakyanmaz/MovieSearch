@@ -2,7 +2,7 @@
 //  MovieListWebResponse.swift
 //  MovieSearch
 //
-//  Created by NDSDEVTEAM9 on 21.09.2018.
+//  Created by Burak Yanmaz on 21.09.2018.
 //  Copyright © 2018 simpler. All rights reserved.
 //
 
