@@ -7,6 +7,12 @@ target 'MovieSearch' do
 
   # Pods for MovieSearch
   pod 'PYSearch'
+  pod 'DZNEmptyDataSet'
+  pod 'Kingfisher'
+
+  pod 'Alamofire'
+  pod 'AlamofireObjectMapper'
+  pod 'ObjectMapper'
 
   target 'MovieSearchTests' do
     inherit! :search_paths
